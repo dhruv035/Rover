@@ -90,11 +90,11 @@ const Home: NextPage = () => {
                 </p>
               </div>
             ) : schedule && schedule?.beneficiary !== nullAddress ? (
-              <div className="flex flex-col">
+              <div className="flex flex-col w-[90%] mt-16 self-center">
                 <p className="text-[2.2vw] font-bold text-green-500">
-                  Total Allocation is {formatEther(schedule.amountTotal)}($ROVE)
+                  Total Allocation($ROVE): {formatEther(schedule.amountTotal)}
                 </p>
-                <div className="flex flex-row">
+                <div className="flex flex-row mt-10">
                   <div className="text-[1.5vw] flex flex-col text-sky-200">
                     <p className="font-bold">Allocation Date: </p>
                     <p className="font-bold">Initial Cliff:</p>
@@ -133,7 +133,7 @@ const Home: NextPage = () => {
                 </div>
                 <button
                   disabled={!(Number(availableAmount) > 0)}
-                  className="border-blue-800 border-[1px] bg-amber-500 text-black self-center w-[20vw] p-2 rounded-[10px] mt-4"
+                  className="border-blue-800 border-[1px] bg-amber-500 text-black self-center w-[20vw] p-2 rounded-[10px] mt-14"
                   onClick={() => {
                     release();
                   }}
