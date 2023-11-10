@@ -30,16 +30,19 @@ const Home: NextPage = () => {
   }, [schedule]);
   const vestingRound = useMemo(() => {
     if (!schedule) return 0;
-    //if (schedule.duration < elapsed) return -1;
+    if (schedule.duration < elapsed) return -1;
     else return Math.floor(elapsed / Number(schedule.slicePeriodSeconds)) + 1;
   }, [elapsed, schedule]);
 
-  const nextVesting = useMemo(()=>{
-    if(vestingRound===-1||!schedule)
-    return 0
+  const nextVesting = useMemo(() => {
+    if (vestingRound === -1 || !schedule) return 0;
     else
-    return new Date((Number(schedule.cliff)+vestingRound*Number(schedule.slicePeriodSeconds))*1000)
-  },[vestingRound])
+      return new Date(
+        (Number(schedule.cliff) +
+          vestingRound * Number(schedule.slicePeriodSeconds)) *
+          1000
+      );
+  }, [vestingRound]);
   const { data: vestingSchedule } = useContractRead({
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
     abi: [...contract.abi],
@@ -120,7 +123,12 @@ const Home: NextPage = () => {
                     <p className="">
                       {formatEther(BigInt(Number(availableAmount)))}
                     </p>
-                    <p className="">{"" + new Date()}</p>
+                    <p className="">
+                      {"" +
+                        (nextVesting === 0
+                          ? "Vesting is complete"
+                          : nextVesting)}
+                    </p>
                   </div>
                 </div>
                 <button
