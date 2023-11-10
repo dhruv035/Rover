@@ -111,7 +111,7 @@ const Home: NextPage = () => {
                     <p className="">
                       {secondsToTimeString(
                         Number(schedule.cliff) - Number(schedule.start)
-                      )}
+                      )+" ("+new Date(Number(schedule.cliff)*1000)+")"}
                     </p>
                     <p className="">
                       {secondsToTimeString(Number(schedule.slicePeriodSeconds))}
