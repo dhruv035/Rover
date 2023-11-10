@@ -9,14 +9,14 @@ export const secondsToTimeString = (x:number)=>{
     }
     else if(x/60<60)
     {
-        return (x/60+" minute"+(x/60>1?"s":""))
+        return ((x/60).toFixed(2)+" minute"+(x/60>1?"s":""))
     }
     else if(x/3600<24)
     {
-        return (x/3600+ " hour"+(x/3600>1?"s":""))
+        return ((x/3600).toFixed(2)+ " hour"+(x/3600>1?"s":""))
     }
     else if((x/3600/24)<30) {
-        return (x/3600/24)+ " day"+(x/3600/24>1?"s":"")
+        return (x/3600/24).toFixed(2)+ " day"+(x/3600/24>1?"s":"")
     }
-    else return (x/3600/24/30)+ " month"+((x/3600/24/30>1?"s":""))
+    else return (x/3600/24/30).toFixed(2)+ " month"+((x/3600/24/30>1?"s":""))
 };
