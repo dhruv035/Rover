@@ -128,7 +128,7 @@ const Home: NextPage = () => {
         </motion.div>
         <div className="flex grow flex-col w-[90%] h-[100%] my-[4vh] bg-black text-center ">
           <motion.div
-            className="text-[4vw] text-transparent font-black font-kenia bg-candy bg-clip-text mt-4 self-center w-max"
+            className="text-[4vw] text-transparent font-black font-comfort bg-candy bg-clip-text mt-4 self-center w-max"
             ref={headerRef}
             variants={tlVariants}
             initial={"initial"}
@@ -169,7 +169,7 @@ const Home: NextPage = () => {
                 animate={navInView ? "animated" : "initial"}
                 transition={{ duration: 0.4 }}
               >
-                <div className="flex flex-row text-[2.4vw]  font-poppins text-transparent bg-harvey bg-clip-text">
+                <div className="flex flex-row text-[2.4vw] font-outfit text-transparent bg-harvey bg-clip-text">
                   Total&nbsp;{" "}
                   <p className=" font-extrabold text-transparent bg-mistyMeadow bg-clip-text">
                     ROVE&nbsp;
@@ -177,7 +177,7 @@ const Home: NextPage = () => {
                   Allocated: {formatEther(schedule.amountTotal)}
                 </div>
                 <div className="flex flex-row mt-10">
-                  <div className="text-[1.2vw] flex flex-col text-transparent bg-margo bg-clip-text ">
+                  <div className="text-[1.5vw] flex flex-col text-transparent bg-margo bg-clip-text">
                     <p className="">Allocation Date: </p>
                     <p className="">Initial Cliff:</p>
                     <p className="">Vesting Frequency:</p>
@@ -186,7 +186,7 @@ const Home: NextPage = () => {
                     <p className="">Claim Available:</p>
                     <p className="font-bold">Next Vesting On:</p>
                   </div>
-                  <div className="flex flex-col text-[1.2vw] ml-2 text-transparent bg-summerDog bg-clip-text ">
+                  <div className="flex flex-col text-[1.5vw] ml-2 font-outfit text-transparent bg-summerDog bg-clip-text ">
                     <p className="">
                       {"" +
                         displayDate(new Date(Number(schedule.start) * 1000))}

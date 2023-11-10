@@ -6,10 +6,18 @@
 
 @font-face {
   font-family: "KENIA";
-  src: url("../public/fonts/KENIA/Kenia-Regular.ttf");
-  src: url("../public/fonts/Comfortaa/Comfortaa-VariableFont_wght.ttf")
+  src: url("/fonts/KENIA/Kenia-Regular.ttf");
+  
+}
+@font-face {
+  font-family: "Comfortaa";
+  src: url("/fonts/Comfortaa/Comfortaa-VariableFont_wght.ttf");
 }
 
+@font-face {
+  font-family: "SixCaps";
+  src: url("/fonts/Six_Caps/SixCaps-Regular.ttf");
+}
 html,
 body {
   padding: 0;

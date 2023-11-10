@@ -41,7 +41,7 @@ export const Connect = (props:Props) => {
               if (!connected) {
                 return (
                   <div className='bg-buttonGradient p-[3px] rounded-[30px]'>
-                  <button className='bg-black text-rose-300 rounded-[30px] body-font font-kenia text-[1.5vw]' style={{
+                  <button className='bg-black text-rose-300 rounded-[30px] body-font font-comfort text-[1.5vw]' style={{
                     height:props.height?props.height:"6vh",
                     width:props.width?props.width:"14vw",
                   }} onClick={openConnectModal} type="button">

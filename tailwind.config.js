@@ -43,9 +43,9 @@ module.exports = {
       fontFamily: {
         'poppins': ['Poppins'],
         'outfit':['Outfit'],
-        'agbalumo':['Agbalumo'],
         'kenia':['KENIA'],
         'comfort':['Comfortaa'],
+        'caps':['SixCaps'],
         
       }
       
