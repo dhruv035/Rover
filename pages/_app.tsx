@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { getDefaultWallets, RainbowKitProvider, Chain } from '@rainbow-me/rainbowkit';
 import type { AppProps } from 'next/app';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
@@ -13,13 +13,13 @@ import {
   zora,
   sepolia,
 } from 'wagmi/chains';
-import { Chain } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 
 const nordek: Chain = {
   id: 81041,
   name: 'Nordek',
   network: 'nordek',
+  iconUrl:`https://pbs.twimg.com/profile_images/1721104975164751872/DTsj6Zth_400x400.jpg`,
   nativeCurrency: {
     decimals: 18,
     name: 'Nordek',

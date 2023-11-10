@@ -1,6 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
+
+@font-face {
+  font-family: "KENIA";
+  src: url("../public/fonts/KENIA/Kenia-Regular.ttf");
+  src: url("../public/fonts/Comfortaa/Comfortaa-VariableFont_wght.ttf")
+}
+
 html,
 body {
   padding: 0;

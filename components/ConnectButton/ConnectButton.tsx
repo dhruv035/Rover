@@ -1,6 +1,10 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
-export const Connect = () => {
+type Props = {
+  height?:number;
+  width?:number;
+}
+export const Connect = (props:Props) => {
   return (
     <ConnectButton.Custom>
       {({
@@ -36,9 +40,15 @@ export const Connect = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button className='bg-buttonGradient w-[140px] h-[40px] rounded-[30px]' onClick={openConnectModal} type="button">
-                    Connect Wallet
+                  <div className='bg-buttonGradient p-[3px] rounded-[30px]'>
+                  <button className='bg-black text-rose-300 rounded-[30px] body-font font-kenia text-[1.5vw]' style={{
+                    height:props.height?props.height:"6vh",
+                    width:props.width?props.width:"14vw",
+                  }} onClick={openConnectModal} type="button">
+                    <p className='bg-winter bg-clip-text text-transparent'>Connect Wallet</p>
+                   
                   </button>
+                  </div>
                 );
               }
 
@@ -51,7 +61,7 @@ export const Connect = () => {
               }
 
               return (
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div className="bg-black text-[1.2vw] font-sans p-2 rounded-[10px] " style={{ display: 'flex', gap: 12 }}>
                   <button
                     onClick={openChainModal}
                     style={{ display: 'flex', alignItems: 'center' }}
@@ -61,30 +71,34 @@ export const Connect = () => {
                       <div
                         style={{
                           background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
+                          width: "2vw",
+                          height: "2vw",
                           borderRadius: 999,
                           overflow: 'hidden',
-                          marginRight: 4,
+                          marginRight: "0.7vw",
                         }}
                       >
                         {chain.iconUrl && (
                           <img
                             alt={chain.name ?? 'Chain icon'}
                             src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
+                            style={{ width: "2vw", height: "2vw" }}
                           />
                         )}
                       </div>
                     )}
-                    {chain.name}
+                    <div className='bg-candy text-transparent bg-clip-text'>
+                    <p className=''>{chain.name}</p></div>
                   </button>
 
                   <button onClick={openAccountModal} type="button">
+                  <div className='bg-candy text-transparent bg-clip-text'>
+                    <p>
                     {account.displayName}
                     {account.displayBalance
                       ? ` (${account.displayBalance})`
-                      : ''}
+                      : ''}</p>
+                      </div>
                   </button>
                 </div>
               );

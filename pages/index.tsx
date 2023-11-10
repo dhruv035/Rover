@@ -1,13 +1,23 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
-import { numberWithCommas, secondsToTimeString } from "../utils/dateUtils";
+import { motion, useInView } from "framer-motion";
+import {
+  displayDate,
+  numberWithCommas,
+  secondsToTimeString,
+} from "../utils/dateUtils";
 import Head from "next/head";
 import NavBar from "../components/NavBar";
-import { useAccount, useContractRead, useContractWrite } from "wagmi";
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useNetwork,
+} from "wagmi";
 import { Connect } from "../components/ConnectButton/ConnectButton";
 import contract from "../TokenVesting.json";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { formatEther } from "viem";
 type VestingSchedule = {
   amountTotal: bigint;
@@ -19,10 +29,38 @@ type VestingSchedule = {
   start: bigint;
 };
 const nullAddress = "0x0000000000000000000000000000000000000000";
+
 const Home: NextPage = () => {
-  const [schedule, setSchedule] = useState<VestingSchedule | null>(null);
   const { address } = useAccount();
-  const timestamp = Math.floor(new Date().getTime() / 1000);
+  const { chain } = useNetwork(); //wagmi
+
+  const navbarRef = useRef(null);
+  const headerRef = useRef(null); //References for components
+
+  //InView Hooks
+  const navInView = useInView(navbarRef, { amount: 1 });
+  const headInView = useInView(headerRef, { amount: 1 });
+
+  //Motion Variants
+  const brVariants = {
+    initial: { opacity: 0, translateX: -20, translateY: -40 },
+    animated: { opacity: 1, translateX: 0, translateY: 0 },
+  };
+
+  const tlVariants = {
+    initial: { opacity: 0, translateX: +20, translateY: +40 },
+    animated: { opacity: 1, translateX: 0, translateY: 0 },
+  };
+
+  const tVariants = {
+    initial: { opacity: 0, translateY: +40 },
+    animated: { opacity: 1, translateY: 0 },
+  };
+
+  const timestamp = Math.floor(new Date().getTime() / 1000); //Current Time
+
+  //React State hooks
+  const [schedule, setSchedule] = useState<VestingSchedule | null>(null);
   const elapsed = useMemo(() => {
     if (!schedule) return 0;
 
@@ -43,6 +81,8 @@ const Home: NextPage = () => {
           1000
       );
   }, [vestingRound]);
+
+  //Wagmi Read & Write
   const { data: vestingSchedule } = useContractRead({
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
     abi: [...contract.abi],
@@ -75,43 +115,89 @@ const Home: NextPage = () => {
         <title>Rover Finance</title>
         <meta content="Vesting for Rover Contract" name="Rover Vesting" />
       </Head>
-      <div className="flex flex-col bg-lightPurple min-h-[100vh] h-auto items-center w-full">
-        <NavBar />
-        <div className="flex grow flex-col w-[90%] h-[100%] my-[4vh] rounded-[10px]  bg-themePurple text-center ">
-          <p className="text-[3.5vw] mt-4 text-white">
-            Rover Finance Vesting And Claims
-          </p>
-          <div className="flex grow flex-col h-[100%] text-start p-4">
+      <div className="flex flex-col bg-black min-h-[100vh] font-kenia h-auto items-center w-full">
+        <motion.div
+          ref={navbarRef}
+          variants={brVariants}
+          className="flex w-full"
+          initial={"initial"}
+          animate={"animated"}
+          transition={{ duration: 0.5, delay: 0.7 }}
+        >
+          <NavBar />
+        </motion.div>
+        <div className="flex grow flex-col w-[90%] h-[100%] my-[4vh] bg-black text-center ">
+          <motion.div
+            className="text-[4vw] text-transparent font-black font-kenia bg-candy bg-clip-text mt-4 self-center w-max"
+            ref={headerRef}
+            variants={tlVariants}
+            initial={"initial"}
+            animate={"animated"}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
+            Vesting Claims
+          </motion.div>
+          <div className="flex flex-col max-h-[40%] justify-center text-start p-4">
             {!address ? (
-              <div className="flex flex-col mt-8 items-center text-black">
-                <Connect />
-                <p className="text-red-600 mt-2 text-[2.5vw]">
+              <motion.div
+                className="flex flex-col mt-8 items-center text-black"
+                variants={tVariants}
+                initial={"initial"}
+                animate={navInView ? "animated" : "initial"}
+                transition={{ duration: 0.4 }}
+              >
+                <p className="text-transparent bg-foreverLost bg-clip-text mb-[6vh] text-[2.5vw]">
                   Please Connect Your Wallet
                 </p>
-              </div>
+                <Connect />
+              </motion.div>
+            ) : chain?.id !== 81041 ? (
+              <motion.div
+                className="text-transparent text-center bg-foreverLost bg-clip-text mt-[5vh] text-[2.5vw]"
+                variants={tVariants}
+                initial={"initial"}
+                animate={navInView ? "animated" : "initial"}
+                transition={{ duration: 0.4, delay: 0.3 }}
+              >
+                Please switch to Nordek Chain
+              </motion.div>
             ) : schedule && schedule?.beneficiary !== nullAddress ? (
-              <div className="flex flex-col w-[90%] mt-16 self-center">
-                <p className="text-[2.2vw] font-bold text-green-500">
-                  Total Allocation($ROVE): {formatEther(schedule.amountTotal)}
-                </p>
+              <motion.div
+                className="flex flex-col w-[90%] items-center font-poppins mt-16 self-center"
+                variants={tVariants}
+                initial={"initial"}
+                animate={navInView ? "animated" : "initial"}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="flex flex-row text-[2.4vw]  font-poppins text-transparent bg-harvey bg-clip-text">
+                  Total&nbsp;{" "}
+                  <p className=" font-extrabold text-transparent bg-mistyMeadow bg-clip-text">
+                    ROVE&nbsp;
+                  </p>{" "}
+                  Allocated: {formatEther(schedule.amountTotal)}
+                </div>
                 <div className="flex flex-row mt-10">
-                  <div className="text-[1.5vw] flex flex-col text-sky-200">
-                    <p className="font-bold">Allocation Date: </p>
-                    <p className="font-bold">Initial Cliff:</p>
-                    <p className="font-bold">Vesting Frequency:</p>
-                    <p className="font-bold">Vesting Duration:</p>
-                    <p className="font-bold">Amount already claimed:</p>
-                    <p className="font-bold">Available to be claimed($ROVE):</p>
+                  <div className="text-[1.2vw] flex flex-col text-transparent bg-margo bg-clip-text ">
+                    <p className="">Allocation Date: </p>
+                    <p className="">Initial Cliff:</p>
+                    <p className="">Vesting Frequency:</p>
+                    <p className="">Vesting Duration:</p>
+                    <p className="">Previously Claimed:</p>
+                    <p className="">Claim Available:</p>
                     <p className="font-bold">Next Vesting On:</p>
                   </div>
-                  <div className="flex flex-col text-[1.5vw] ml-2 text-white">
+                  <div className="flex flex-col text-[1.2vw] ml-2 text-transparent bg-summerDog bg-clip-text ">
                     <p className="">
-                      {"" + new Date(Number(schedule.start) * 1000)}
+                      {"" +
+                        displayDate(new Date(Number(schedule.start) * 1000))}
                     </p>
                     <p className="">
                       {secondsToTimeString(
                         Number(schedule.cliff) - Number(schedule.start)
-                      )+" ("+new Date(Number(schedule.cliff)*1000)+")"}
+                      ) +
+                        " (" +
+                        displayDate(new Date(Number(schedule.cliff) * 1000)) +
+                        ")"}
                     </p>
                     <p className="">
                       {secondsToTimeString(Number(schedule.slicePeriodSeconds))}
@@ -119,10 +205,15 @@ const Home: NextPage = () => {
                     <p className="">
                       {secondsToTimeString(Number(schedule.duration))}
                     </p>
-                    <p className="">{formatEther(BigInt(Number(schedule.released)))}</p>
                     <p className="">
-                      {formatEther(BigInt(Number(availableAmount)))}
+                      {formatEther(BigInt(Number(schedule.released)))} ROVE
                     </p>
+                    {availableAmount !== null &&
+                      Number(availableAmount) >= 0 && (
+                        <p className="">
+                          {formatEther(BigInt(Number(availableAmount)))} ROVE
+                        </p>
+                      )}
                     <p className="">
                       {"" +
                         (nextVesting === 0
@@ -131,23 +222,40 @@ const Home: NextPage = () => {
                     </p>
                   </div>
                 </div>
-                <button
-                  disabled={!(Number(availableAmount) > 0)}
-                  className="border-blue-800 border-[1px] bg-amber-500 text-black self-center w-[20vw] p-2 rounded-[10px] mt-14"
-                  onClick={() => {
-                    release();
-                  }}
-                >
-                  Claim Now
-                </button>
-              </div>
+                <div className="mt-14 bg-kyoto p-[3px] rounded-[20px]">
+                  <button
+                    disabled={!(Number(availableAmount) > 0)}
+                    className=" bg-black  text-[1.2vw] self-center w-[14vw] h-[4vh] rounded-[20px]"
+                    onClick={() => {
+                      release();
+                    }}
+                  >
+                    <p
+                      className={
+                        "text-transparent bg-clip-text " +
+                        (!(Number(availableAmount) > 0)
+                          ? "bg-megatron"
+                          : "bg-subu")
+                      }
+                    >
+                      {" "}
+                      {!(Number(availableAmount) > 0) ? "Claimed" : "Claim Now"}
+                    </p>
+                  </button>
+                </div>
+              </motion.div>
             ) : (
-              <div className="flex flex-col text-black items-center">
+              <motion.div
+                className="flex flex-col text-black items-center"
+                variants={tVariants}
+                initial={"initial"}
+                animate={navInView ? "animated" : "initial"}
+                transition={{ duration: 0.4 }}
+              >
                 <p className="text-red-600 text-[3vw]">
                   Your wallet does not have a vesting schedule.
                 </p>
-                {!address && <Connect />}
-              </div>
+              </motion.div>
             )}
           </div>
         </div>
