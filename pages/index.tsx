@@ -119,7 +119,7 @@ const Home: NextPage = () => {
                     <p className="">
                       {secondsToTimeString(Number(schedule.duration))}
                     </p>
-                    <p className="">{Number(schedule.released)}</p>
+                    <p className="">{formatEther(BigInt(Number(schedule.released)))}</p>
                     <p className="">
                       {formatEther(BigInt(Number(availableAmount)))}
                     </p>
