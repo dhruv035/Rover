@@ -67,6 +67,7 @@ const Home: NextPage = () => {
                 <p className="font-bold">Claimed: {(Number(schedule.released))}</p>
                 <p className="font-bold">Available:{(Number(availableAmount))}</p>
                 <p className="font-bold">Next Vesting On</p>
+                <button className="border-blue-800 border-[1px] bg-yellow-400 text-black p-2 rounded-[10px] mt-4">Claim Now</button>
               </div>
             ) : (
               <div className="flex flex-col text-black items-center">
