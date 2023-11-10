@@ -13,8 +13,27 @@ import {
   zora,
   sepolia,
 } from 'wagmi/chains';
+import { Chain } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 
+const nordek: Chain = {
+  id: 81041,
+  name: 'Nordek',
+  network: 'nordek',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Nordek',
+    symbol: 'NRK',
+  },
+  rpcUrls: {
+    public: { http: ['https://mainnet-rpc.nordekscan.com'] },
+    default: { http: ['https://mainnet-rpc.nordekscan.com'] },
+  },
+  blockExplorers: {
+    default: { name: 'Nordekscan', url: 'https://nordekscan.com:443' },
+  },
+  testnet: false,
+};
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     mainnet,
@@ -25,6 +44,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     zora,
     goerli,
     sepolia,
+    nordek
   ],
   [
     publicProvider()]
