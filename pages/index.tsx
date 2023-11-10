@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import NavBar from "../components/NavBar";
-import { useAccount, useContractRead } from "wagmi";
+import { useAccount, useContractRead, useContractWrite } from "wagmi";
 import { Connect } from "../components/ConnectButton/ConnectButton";
 import contract from "../TokenVesting.json";
 import { useState } from "react";
@@ -35,8 +35,14 @@ const Home: NextPage = () => {
     abi: [...contract.abi],
     functionName: "getAvailableVestingAmount",
     args: [address],
-
   });
+
+  const { writeAsync: release } = useContractWrite({
+    abi: [...contract.abi],
+    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
+    functionName: "release",
+  });
+
   const currentDate = new Date();
   const timestamp = Math.floor(currentDate.getTime())
 
@@ -67,7 +73,7 @@ const Home: NextPage = () => {
               </div>
             ) : schedule&&schedule?.beneficiary!==nullAddress ? (
               <div className="text-[2vw] text-sky-200">
-                <p className="font-bold">Total Allocation: {Number(schedule.amountTotal)}</p>
+                <p className="font-bold text-[3vw]">Total Allocation: {Number(schedule.amountTotal)}</p>
                 <p className="font-bold">Allocation Date: {(new Date(Number(schedule.start))).toLocaleDateString()}</p>
                 <p className="font-bold">Cliff: {(new Date(Number(schedule.cliff))).toLocaleDateString()}</p>
                 <p className="font-bold">Frequency: {(Number(schedule.slicePeriodSeconds))}</p>
@@ -75,7 +81,7 @@ const Home: NextPage = () => {
                 <p className="font-bold">Claimed: {(Number(schedule.released))}</p>
                 <p className="font-bold">Available:{(Number(availableAmount))}</p>
                 <p className="font-bold">Next Vesting In: {Number(schedule.slicePeriodSeconds)-Math.floor((timestamp-Number(schedule.cliff))/1000)%Number(schedule.slicePeriodSeconds)}</p>
-                <button className="border-blue-800 border-[1px] bg-yellow-400 text-black p-2 rounded-[10px] mt-4">Claim Now</button>
+                <button className="border-blue-800 border-[1px] bg-yellow-400 text-black p-2 rounded-[10px] mt-4" onClick={()=>{release()}}>Claim Now</button>
               </div>
             ) : (
               <div className="flex flex-col text-black items-center">
