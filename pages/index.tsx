@@ -84,6 +84,7 @@ const Home: NextPage = () => {
 
   //Wagmi Read & Write
   const { data: vestingSchedule } = useContractRead({
+    watch:true,
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
     abi: [...contract.abi],
     functionName: "getVestingSchedule",
@@ -225,7 +226,7 @@ const Home: NextPage = () => {
                       {"" +
                         (nextVesting === 0
                           ? "Vesting is complete"
-                          : nextVesting)}
+                          : displayDate(nextVesting))}
                     </p>
                   </div>
                 </div>
