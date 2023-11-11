@@ -256,7 +256,7 @@ const Home: NextPage = () => {
                   </div>
                 ) : (
                   <p className="text-transparent text-[3vw] mt-[2vh] bg-clip-text bg-megatron ">
-                    Vesting is Under Maintenance Correctly
+                    Vesting is Under Maintenance Currently
                   </p>
                 )}
               </motion.div>
