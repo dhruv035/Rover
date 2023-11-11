@@ -35,7 +35,7 @@
                 "name": "_totalAllocation",
                 "type": "uint256"
             }
-        ],
+        ], 
         "name": "createVestingSchedule",
         "outputs": [],
         "stateMutability": "nonpayable",
