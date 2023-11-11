@@ -99,6 +99,13 @@ const Home: NextPage = () => {
     args: [address],
   });
 
+  const { data: isPaused } = useContractRead({
+    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
+    abi: [...contract.abi],
+    functionName: "paused",
+  });
+
+
   const { writeAsync: release } = useContractWrite({
     abi: [...contract.abi],
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
@@ -239,7 +246,7 @@ const Home: NextPage = () => {
                       }
                     >
                       {" "}
-                      {!(Number(availableAmount) > 0) ? "Claimed" : "Claim Now"}
+                      {isPaused?"Contract Paused":(!(Number(availableAmount) > 0) ? "Claimed" : "Claim Now")}
                     </p>
                   </button>
                 </div>
