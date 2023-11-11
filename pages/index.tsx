@@ -84,7 +84,7 @@ const Home: NextPage = () => {
 
   //Wagmi Read & Write
   const { data: vestingSchedule } = useContractRead({
-    watch:true,
+    watch: true,
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
     abi: [...contract.abi],
     functionName: "getVestingSchedule",
@@ -105,7 +105,6 @@ const Home: NextPage = () => {
     abi: [...contract.abi],
     functionName: "paused",
   });
-
 
   const { writeAsync: release } = useContractWrite({
     abi: [...contract.abi],
@@ -214,12 +213,12 @@ const Home: NextPage = () => {
                       {secondsToTimeString(Number(schedule.duration))}
                     </p>
                     <p className="">
-                      {formatEther(BigInt(Number(schedule.released)))} ROVE
+                      {parseFloat(Number(formatEther(BigInt(Number(schedule.released)))).toFixed(2))} ROVE
                     </p>
                     {availableAmount !== null &&
                       Number(availableAmount) >= 0 && (
                         <p className="">
-                          {formatEther(BigInt(Number(availableAmount)))} ROVE
+                          {parseFloat(Number(formatEther(BigInt(Number(availableAmount)))).toFixed(2))} ROVE
                         </p>
                       )}
                     <p className="">
@@ -230,27 +229,36 @@ const Home: NextPage = () => {
                     </p>
                   </div>
                 </div>
-                <div className="mt-14 bg-kyoto p-[3px] rounded-[20px]">
-                  <button
-                    disabled={!(Number(availableAmount) > 0)}
-                    className=" bg-black  text-[1.2vw] self-center w-[14vw] h-[4vh] rounded-[20px]"
-                    onClick={() => {
-                      release();
-                    }}
-                  >
-                    <p
-                      className={
-                        "text-transparent bg-clip-text " +
-                        (!(Number(availableAmount) > 0)
-                          ? "bg-megatron"
-                          : "bg-subu")
-                      }
+
+                {!isPaused ? (
+                  <div className="mt-14 bg-kyoto p-[3px] rounded-[20px]">
+                    <button
+                      disabled={!(Number(availableAmount) > 0)}
+                      className=" bg-black  text-[1.2vw] self-center w-[14vw] h-[4vh] rounded-[20px]"
+                      onClick={() => {
+                        release();
+                      }}
                     >
-                      {" "}
-                      {isPaused?"Contract Paused":(!(Number(availableAmount) > 0) ? "Claimed" : "Claim Now")}
-                    </p>
-                  </button>
-                </div>
+                      <p
+                        className={
+                          "text-transparent bg-clip-text " +
+                          (!(Number(availableAmount) > 0)
+                            ? "bg-megatron"
+                            : "bg-subu")
+                        }
+                      >
+                        {" "}
+                        {!(Number(availableAmount) > 0)
+                          ? "Claimed"
+                          : "Claim Now"}
+                      </p>
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-transparent text-[3vw] mt-[2vh] bg-clip-text bg-megatron ">
+                    Vesting Contract is Under Maintenance
+                  </p>
+                )}
               </motion.div>
             ) : (
               <motion.div
